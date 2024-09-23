@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -67,4 +70,26 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation (libs.navigation.compose)
+    implementation (libs.androidx.hilt.navigation.fragment)
+
+    implementation(libs.hilt.android)
+    implementation (libs.androidx.hilt.navigation.compose)
+
+    ksp(libs.hilt.android.compiler)
+
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+    implementation (libs.logging.interceptor)
+    implementation(libs.coil.compose)
+
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
+
+    implementation (libs.androidx.room.runtime)
+    implementation (libs.androidx.room.ktx)
+    annotationProcessor (libs.androidx.room.compiler)
+    ksp (libs.androidx.room.compiler)
+
 }
