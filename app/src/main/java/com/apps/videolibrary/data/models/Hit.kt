@@ -28,6 +28,7 @@ data class Hit (
       pageURL = this.pageURL,
       type = this.type,
       tags = this.tags,
+      duration = this.duration,
       url = this.videos?.medium?.url,
       views = this.views,
       downloads = this.downloads,

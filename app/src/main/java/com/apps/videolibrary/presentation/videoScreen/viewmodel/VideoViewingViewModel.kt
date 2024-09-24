@@ -11,6 +11,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val NUMBER_OF_RETRIES = 3
+
 @HiltViewModel
 class VideoViewingViewModel @Inject constructor(
     private val videosRepository: VideosRepository,
@@ -23,13 +25,18 @@ class VideoViewingViewModel @Inject constructor(
         is VideoViewingContract.Event.UpdateCurrentVideoIndex -> {
             updateCurrentVideoIndex(event.index)
         }
+
+        is VideoViewingContract.Event.UpdateError -> {
+            updateError(event.error)
+        }
     }
+
 
     fun getCurrentVideo(index: Int) {
         viewModelScope.launch {
-            updateUiState { copy(isLoading = true, error = null) }
+            updateUiState { copy( error = null) }
             try {
-                retry(3) {
+                retry(NUMBER_OF_RETRIES) {
                     val videos = videosRepository.getHitsFromDB().map {
                         it.entityToModel()
                     }
@@ -38,14 +45,14 @@ class VideoViewingViewModel @Inject constructor(
                     }
                     if (index < videos.size) {
                         updateUiState {
-                            copy(currentVideo = videos[index], currentVideoIndex = index, isLoading = false)
+                            copy(currentVideo = videos[index], currentVideoIndex = index)
                         }
                     } else {
-                        updateUiState { copy(isLoading = false, error = "Video not found") }
+                        updateUiState { copy( error = "Video not found") }
                     }
                 }
             } catch (e: Exception) {
-                updateUiState { copy(isLoading = false, error = e.message) }
+                updateUiState { copy( error = e.message) }
             }
         }
 
@@ -55,10 +62,19 @@ class VideoViewingViewModel @Inject constructor(
         updateUiState {
             copy(currentVideo = state.value.videosList[index], currentVideoIndex = index)
         }
-
     }
 
+
+
+    private fun updateError(error: String?) {
+        updateUiState {
+            copy(error = error)
+        }
+    }
+
+
 }
+
 
 suspend fun <T> retry(
     numberOfRetries: Int,

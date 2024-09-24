@@ -1,16 +1,9 @@
 package com.apps.videolibrary.di
 
-import android.content.Context
-import androidx.room.Room
-import com.apps.videolibrary.data.db.AppDatabase
-import com.apps.videolibrary.data.db.HitsDao
 import com.apps.videolibrary.data.network.PixabayApiService
-import com.apps.videolibrary.data.repository.VideosRepositoryImpl
-import com.apps.videolibrary.domain.repository.VideosRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,17 +12,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-
-    @Provides
-    @Singleton
-    fun provideContext(@ApplicationContext context: Context): Context {
-        return context
-    }
 
     @Provides
     @Singleton
@@ -58,33 +43,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providePexelsApiService(retrofit: Retrofit): PixabayApiService {
+    fun providePixabayApiService(retrofit: Retrofit): PixabayApiService {
         return retrofit.create(PixabayApiService::class.java)
     }
-
-    @Provides
-    @Singleton
-    fun provideAppDatabase(context: Context): AppDatabase {
-        return Room.databaseBuilder(
-            context.applicationContext,
-            AppDatabase::class.java,
-            "video_library_db"
-        ).build()
-    }
-
-    @Provides
-    fun provideHitsDao(appDatabase: AppDatabase): HitsDao {
-        return appDatabase.hitsDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideVideosRepository(
-        pixabayApiService: PixabayApiService,
-        hitsDao: HitsDao
-    ): VideosRepository {
-        return VideosRepositoryImpl(pixabayApiService, hitsDao)
-    }
-
-
 }
+

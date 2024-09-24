@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 import com.apps.videolibrary.data.models.Hit
 import com.apps.videolibrary.data.models.Medium
 import com.apps.videolibrary.data.models.Videos
+import kotlin.time.Duration
 
 @Entity(tableName = "Hits")
 
@@ -14,6 +15,7 @@ data class HitsEntity(
     var pageURL: String? = null,
     var type: String? = null,
     var tags: String? = null,
+    var duration: Int? = null,
     var url: String? = null,
     var views: Int? = null,
     var downloads: Int? = null,
@@ -31,6 +33,7 @@ data class HitsEntity(
             pageURL = this.pageURL,
             type = this.type,
             tags = this.tags,
+            duration = this.duration,
             videos = Videos(medium = Medium(url=this.url)),
             views = this.views,
             downloads = this.downloads,

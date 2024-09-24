@@ -9,12 +9,12 @@ interface VideoViewingContract {
         val videosList: List<Hit> = mutableListOf(),
         val currentVideo: Hit?=null,
         val currentVideoIndex: Int=-1,
-        val isLoading: Boolean = true,
         val error: String?=null
     )
 
     sealed interface Event {
         data class UpdateCurrentVideoIndex(val index: Int): Event
+        data class UpdateError(val error: String?): Event
     }
 
     sealed interface Effect {
