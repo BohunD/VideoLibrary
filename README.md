@@ -11,6 +11,8 @@ This is a simple test application that fetches and displays a list of videos fro
 - Room Database: Local storage for offline support.
 - ExoPlayer: Video playback.
 - Coroutines/Flow: Asynchronous programming for networking and database operations.
+- MVI (Model-View-Intent): Architecture pattern for state management and separation of concerns.
+
 
 <img height="346" alt="Знімок екрана 2024-09-24 о 15 34 41" src="https://github.com/user-attachments/assets/95a148e6-3877-41cb-b23c-ebd611d0446a">
 
